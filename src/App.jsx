@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [playlistUrl, setPlaylistUrl] = useState("");
+  const [tracks, setTracks] = useState([]);
+
+  const fetchTracks = async () => {
+    if (!playlistUrl) return;
+
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/get_playlist_tracks", {
+        params: { playlist_url: playlistUrl }
+      });
+      setTracks(response.data.tracks);
+    } catch (error) {
+      console.error("Error fetching tracks:", error);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1>Playlist Genres</h1>
+      <input
+        type="text"
+        placeholder="Enter Spotify Playlist URL"
+        value={playlistUrl}
+        onChange={(e) => setPlaylistUrl(e.target.value)}
+      />
+      <button onClick={fetchTracks}>Fetch Tracks</button>
+
+      <ul>
+        {tracks.map((track, index) => (
+          <li key={index}>
+            <img src={track.image} alt={track.name} width="50" />
+            <strong>{track.name}</strong> - {track.artist} ({track.album})
+            {track.preview_url && (
+              <audio controls>
+                <source src={track.preview_url} type="audio/mpeg" />
+              </audio>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-export default App
+export default App;
