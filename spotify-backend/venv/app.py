@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import spotipy
+import os
 from spotipy.oauth2 import SpotifyClientCredentials
 from dotenv import load_dotenv
 load_dotenv()
@@ -9,8 +10,8 @@ app = Flask(__name__)
 CORS(app)  
 
 
-CLIENT_ID = "7dadeb50c07a4356bb40958f1824260c"
-CLIENT_SECRET = "5375a66b6abb4887944011cf1a61d006"
+CLIENT_ID = os.environ["spotify_client_id"]
+CLIENT_SECRET = os.environ["spotify_client_secret"]
 
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
 
