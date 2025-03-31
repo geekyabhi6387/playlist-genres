@@ -34,7 +34,7 @@ function App() {
         {tracks.map((track, index) => (
           <li key={index}>
             <img src={track.image} alt={track.name} width="50" />
-            <strong>{track.name}</strong> - {track.artist} ({track.album})
+            <strong>{track.name}</strong> - {track.artist} 
             {track.preview_url && (
               <audio controls>
                 <source src={track.preview_url} type="audio/mpeg" />
