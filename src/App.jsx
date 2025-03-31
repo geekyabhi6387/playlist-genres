@@ -20,6 +20,7 @@ function App() {
 
   return (
     <div className="App">
+      <div className="InputContainer">
       <h1>Playlist Genres</h1>
       <input
         type="text"
@@ -28,7 +29,7 @@ function App() {
         onChange={(e) => setPlaylistUrl(e.target.value)}
       />
       <button onClick={fetchTracks}>Fetch Tracks</button>
-
+      </div>
       <ul>
         {tracks.map((track, index) => (
           <li key={index}>
