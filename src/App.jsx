@@ -4,6 +4,7 @@ import axios from "axios";
 function App() {
   const [playlistUrl, setPlaylistUrl] = useState("");
   const [tracks, setTracks] = useState([]);
+  const [genreCounts, setGenreCounts] = useState({});
 
   const fetchTracks = async () => {
     if (!playlistUrl) return;
@@ -13,6 +14,7 @@ function App() {
         params: { playlist_url: playlistUrl }
       });
       setTracks(response.data.tracks);
+      setGenreCounts(response.data.genre_count);
     } catch (error) {
       console.error("Error fetching tracks:", error);
     }
@@ -30,16 +32,12 @@ function App() {
       />
       <button onClick={fetchTracks}>Fetch Tracks</button>
       </div>
+      
       <ul>
         {tracks.map((track, index) => (
           <li key={index}>
             <img src={track.image} alt={track.name} width="50" />
-            <strong>{track.name}</strong> - {track.artist} 
-            {track.preview_url && (
-              <audio controls>
-                <source src={track.preview_url} type="audio/mpeg" />
-              </audio>
-            )}
+            <strong>{track.name}</strong> - {track.artist} ({track.genre})
           </li>
         ))}
       </ul>
